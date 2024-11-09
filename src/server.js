@@ -1,19 +1,17 @@
 import express from "express";
-import morgan from "morgan";
-import { logger } from "./middleware/logger.js";
-import { notFound, errorHandler } from "./middleware/errorHandler.js";
+import appSetup from "./app.setup.js";
+import appHooks from "./app.hooks.js";
 
 const app = express();
 
 const PORT = process.env.PORT || 8080;
 
-app.use(morgan("dev"));
+appSetup(app);
 
 app.get("/", (req, res) => {
   res.send("Hello, World!");
 });
 
-app.use("*", notFound);
-app.use(errorHandler);
+appHooks(app);
 
 app.listen(PORT, () => console.log(`[server]: running on localhost:${PORT}`));
