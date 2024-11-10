@@ -13,8 +13,7 @@ const storage = multer.diskStorage({
     fs.mkdirSync(basePath, { recursive: true });
 
     const isPost = req.path === "/api/posts";
-    const uploadDir = isPost ? "post" : "profile";
-    const fullPath = path.join(basePath, uploadDir);
+    const fullPath = path.join(basePath, isPost ? "post" : "profile");
     fs.mkdirSync(fullPath, { recursive: true });
 
     cb(null, fullPath);
