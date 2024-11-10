@@ -1,20 +1,23 @@
 import multer from "multer";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 import APIError from "../utils/APIError.js";
 
-const storage = multer.diskStorage({
-  // FIXME: multer destination not creating directories
-  destination: (req, _, cb) => {
-    const { baseUrl } = req;
-    const isPost = baseUrl === "/api/posts";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = path.dirname(__filename);
-    cb(
-      null,
-      path.join(__dirname, `../../uploads/${isPost ? "post" : "profile"}`),
-    );
+const storage = multer.diskStorage({
+  destination: (req, _, cb) => {
+    const basePath = path.join(__dirname, "../../uploads");
+    fs.mkdirSync(basePath, { recursive: true });
+
+    const isPost = req.path === "/api/posts";
+    const uploadDir = isPost ? "post" : "profile";
+    const fullPath = path.join(basePath, uploadDir);
+    fs.mkdirSync(fullPath, { recursive: true });
+
+    cb(null, fullPath);
   },
   filename: (_, file, cb) => {
     cb(null, file.originalname);
