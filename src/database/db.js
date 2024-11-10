@@ -1,7 +1,8 @@
 import { drizzle } from "drizzle-orm/node-postgres";
-import { Client } from "pg";
+import pg from "pg";
 import * as schema from "./schema.js";
 
+const { Client } = pg;
 const client = new Client({
   connectionString: process.env.DB_URL,
 });
