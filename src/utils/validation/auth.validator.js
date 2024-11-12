@@ -28,3 +28,17 @@ export const registerValidator = [
     .withMessage("Password should be 20 characters at most"),
   validator,
 ];
+
+export const loginValidator = [
+  check("email")
+    .notEmpty()
+    .withMessage("Email is required")
+    .isEmail()
+    .withMessage("Please enter a valid email"),
+  check("password")
+    .isLength({ min: 8 })
+    .withMessage("Password should be 8 characters at least")
+    .isLength({ max: 20 })
+    .withMessage("Password should be 20 characters at most"),
+  validator,
+];
