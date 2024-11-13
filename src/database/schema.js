@@ -11,18 +11,48 @@ export const users = pgTable("users", {
   updatedAt: timestamp("updated_at").$defaultFn(() => new Date()),
 });
 
-// export const posts = pgTable("posts", {
-//   id: serial("id").primaryKey(),
-//   content: text("content").notNull(),
-//   authorId: integer("author_id")
-//     .notNull()
-//     .references(() => users.id),
-// });
+export const posts = pgTable("posts", {
+  id: serial("id").primaryKey(),
+  content: text("content").notNull(),
+  authorId: integer("author_id")
+    .notNull()
+    .references(() => users.id),
+  createdAt: timestamp("created_at").$defaultFn(() => new Date()),
+  updatedAt: timestamp("updated_at").$defaultFn(() => new Date()),
+});
 
-// export const tokens = pgTable("tokens", {
-//   id: serial("id").primaryKey(),
-//   refreshToken: text("refresh_token").notNull(),
-//   userId: integer("user_id")
-//     .notNull()
-//     .references(() => users.id),
-// });
+export const likes = pgTable("likes", {
+  id: serial("id").primaryKey(),
+  postId: integer("post_id")
+    .notNull()
+    .references(() => posts.id),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => users.id),
+});
+
+export const followers = pgTable("followers", {
+  id: serial("id").primaryKey(),
+  followerId: integer("follower_id")
+    .notNull()
+    .references(() => users.id),
+  followedId: integer("followed_id")
+    .notNull()
+    .references(() => users.id),
+});
+
+export const comments = pgTable("comments", {
+  id: serial("id").primaryKey(),
+  content: text("content").notNull(),
+  postId: integer("post_id")
+    .notNull()
+    .references(() => posts.id),
+  userId: integer("user_id")
+    .notNull()
+    .references(() => users.id),
+});
+
+export const tokens = pgTable("tokens", {
+  id: serial("id").primaryKey(),
+  token: text("token").notNull(),
+});
