@@ -6,7 +6,7 @@ import userRouter from "./router/user.js";
 export default (app) => {
   app.use("/api/v1/auth", authRouter);
   app.use(verifyJWT);
-  app.use("/api/v1", userRouter);
+  app.use("/api/v1/users", userRouter);
   app.use("*", notFound);
   app.use(errorHandler);
 };
