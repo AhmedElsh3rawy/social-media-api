@@ -16,8 +16,14 @@ export const getUsers = asyncWrapper(async (req, res, next) => {
   res.status(200).json(result);
 });
 
-export const getUserById = asyncWrapper(async (req, res, next) => {
+export const getUser = asyncWrapper(async (req, res, next) => {
   const userId = +req.params.id;
+  if (isNaN(userId) || userId <= 0) {
+    return next(
+      new APIError("User id should be numerical and greater than 0"),
+      400,
+    );
+  }
   const user = await db
     .select({
       username: users.username,
@@ -34,6 +40,12 @@ export const getUserById = asyncWrapper(async (req, res, next) => {
 
 export const updateUser = asyncWrapper(async (req, res, next) => {
   const userId = +req.params.id;
+  if (isNaN(userId) || userId <= 0) {
+    return next(
+      new APIError("User id should be numerical and greater than 0"),
+      400,
+    );
+  }
   const { username, bio, profileImage } = req.body;
   let updatedFields = {};
   if (username) updatedFields.username = username;
@@ -44,4 +56,19 @@ export const updateUser = asyncWrapper(async (req, res, next) => {
   res
     .status(200)
     .json({ statusCode: 200, status: "Ok", message: "User has been update" });
+});
+
+export const deleteUser = asyncWrapper(async (req, res, next) => {
+  const userId = +req.params.id;
+  if (isNaN(userId) || userId <= 0) {
+    return next(
+      new APIError("User id should be numerical and greater than 0"),
+      400,
+    );
+  }
+
+  await db.delete(users).where(eq(users.id, userId));
+  res
+    .status(200)
+    .json({ statusCode: 200, status: "Ok", message: "User has been deleted" });
 });
