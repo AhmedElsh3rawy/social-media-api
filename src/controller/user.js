@@ -35,15 +35,12 @@ export const getUserById = asyncWrapper(async (req, res, next) => {
 export const updateUser = asyncWrapper(async (req, res, next) => {
   const userId = +req.params.id;
   const { username, bio, profileImage } = req.body;
-  if (username) {
-    await db.update(users).set({ username }).where(eq(users.id, userId));
-  }
-  if (bio) {
-    await db.update(users).set({ bio }).where(eq(users.id, userId));
-  }
-  if (profileImage) {
-    await db.update(users).set({ profileImage }).where(eq(users.id, userId));
-  }
+  let updatedFields = {};
+  if (username) updatedFields.username = username;
+  if (bio) updatedFields.bio = bio;
+  if (profileImage) updatedFields.profileImage = profileImage;
+
+  await db.update(users).set(updatedFields).where(eq(users.id, userId));
   res
     .status(200)
     .json({ statusCode: 200, status: "Ok", message: "User has been update" });
