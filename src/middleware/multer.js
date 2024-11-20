@@ -7,17 +7,6 @@ import APIError from "../utils/APIError.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const formatDate = (date) => {
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  const hours = String(date.getHours()).padStart(2, "0");
-  const minutes = String(date.getMinutes()).padStart(2, "0");
-  const seconds = String(date.getSeconds()).padStart(2, "0");
-
-  return `${year}-${month}-${day}_${hours}:${minutes}:${seconds}`;
-};
-
 const storage = multer.diskStorage({
   destination: (req, _, cb) => {
     const basePath = path.join(__dirname, "../../uploads");
@@ -30,7 +19,7 @@ const storage = multer.diskStorage({
     cb(null, fullPath);
   },
   filename: (_, file, cb) => {
-    cb(null, formatDate(new Date()) + "_" + file.originalname);
+    cb(null, new Date().toISOString() + "_" + file.originalname);
   },
 });
 
