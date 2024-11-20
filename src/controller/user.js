@@ -7,6 +7,7 @@ import APIError from "../utils/APIError.js";
 export const getUsers = asyncWrapper(async (req, res, next) => {
   const result = await db
     .select({
+      id: users.id,
       username: users.username,
       bio: users.bio,
       profileImage: users.profileImage,
