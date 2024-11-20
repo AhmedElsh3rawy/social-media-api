@@ -1,7 +1,8 @@
 import { Router } from "express";
 import {
   deleteUser,
-  getUser,
+  getUserByEmail,
+  getUserById,
   getUsers,
   updateUser,
 } from "../controller/user.js";
@@ -11,7 +12,9 @@ const router = Router();
 
 router.get("/", getUsers);
 
-router.get("/:id", getUser);
+router.get("/:id", getUserById);
+
+router.get("/:email", getUserByEmail);
 
 router.patch("/:id", upload.single("image"), updateUser);
 
