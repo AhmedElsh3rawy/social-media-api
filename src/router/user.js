@@ -12,7 +12,7 @@ const router = Router();
 
 router.get("/", getUsers);
 
-router.get("/:id", getUserById);
+router.get("/:id([1-9]+)", getUserById);
 
 router.get("/:email", getUserByEmail);
 
