@@ -75,7 +75,7 @@ export const updateUser = asyncWrapper(async (req, res, next) => {
   await db.update(users).set(updatedFields).where(eq(users.id, userId));
   res
     .status(200)
-    .json({ statusCode: 200, status: "Ok", message: "User has been update" });
+    .json({ statusCode: 200, status: "Ok", message: "User has been updated" });
 });
 
 export const deleteUser = asyncWrapper(async (req, res, next) => {
