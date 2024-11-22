@@ -14,6 +14,7 @@ export const users = pgTable("users", {
 export const posts = pgTable("posts", {
   id: serial("id").primaryKey(),
   content: text("content").notNull(),
+  image: text("image"),
   authorId: integer("author_id")
     .notNull()
     .references(() => users.id),
@@ -44,9 +45,11 @@ export const followers = pgTable("followers", {
 export const comments = pgTable("comments", {
   id: serial("id").primaryKey(),
   content: text("content").notNull(),
+  image: text("image"),
   postId: integer("post_id")
     .notNull()
     .references(() => posts.id),
+  commentId: integer("comment_id").references(() => comments.id),
   userId: integer("user_id")
     .notNull()
     .references(() => users.id),
