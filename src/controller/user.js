@@ -21,8 +21,7 @@ export const getUserById = asyncWrapper(async (req, res, next) => {
   const userId = +req.params.id;
   if (isNaN(userId) || userId <= 0) {
     return next(
-      new APIError("User id should be numerical and greater than 0"),
-      400,
+      new APIError("User id should be numerical and greater than 0", 400),
     );
   }
   const user = await db
@@ -62,8 +61,7 @@ export const updateUser = asyncWrapper(async (req, res, next) => {
   const userId = +req.params.id;
   if (isNaN(userId) || userId <= 0) {
     return next(
-      new APIError("User id should be numerical and greater than 0"),
-      400,
+      new APIError("User id should be numerical and greater than 0", 400),
     );
   }
   const { username, bio, profileImage } = req.body;
@@ -82,8 +80,7 @@ export const deleteUser = asyncWrapper(async (req, res, next) => {
   const userId = +req.params.id;
   if (isNaN(userId) || userId <= 0) {
     return next(
-      new APIError("User id should be numerical and greater than 0"),
-      400,
+      new APIError("User id should be numerical and greater than 0", 400),
     );
   }
 
