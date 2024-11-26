@@ -8,8 +8,7 @@ export const follow = asyncWrapper(async (req, res, next) => {
   const userId = +req.params.id;
   if (isNaN(userId) || userId <= 0) {
     return next(
-      new APIError("User id should be numerical and greater than 0"),
-      400,
+      new APIError("User id should be numerical and greater than 0", 400),
     );
   }
   const followerId = +req.user.id;
@@ -26,8 +25,7 @@ export const unfollow = asyncWrapper(async (req, res, next) => {
   const userId = +req.params.id;
   if (isNaN(userId) || userId <= 0) {
     return next(
-      new APIError("User id should be numerical and greater than 0"),
-      400,
+      new APIError("User id should be numerical and greater than 0", 400),
     );
   }
   const followerId = +req.user.id;
@@ -44,6 +42,8 @@ export const unfollow = asyncWrapper(async (req, res, next) => {
   res.status(200).json({ statusCode: 200, status: "Ok" });
 });
 
-export const getFollowers = asyncWrapper(async (req, res, next) => {});
+export const getFollowers = asyncWrapper(async (req, res, next) => {
+  const userId = +req.user.id;
+});
 
 export const getFollowings = asyncWrapper(async (req, res, next) => {});
