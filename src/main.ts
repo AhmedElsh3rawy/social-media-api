@@ -1,6 +1,7 @@
 import express from "express";
 import type { Express, Request, Response } from "express";
 import morgan from "morgan";
+import { errorHandler, notFound } from "./middleware/errorHandler";
 
 const app: Express = express();
 
@@ -12,4 +13,7 @@ app.get("/", (req: Request, res: Response) => {
 	res.send("Hello, World!");
 });
 
-app.listen(PORT, () => console.log(`[server]: Listening on port: ${PORT}`));
+app.use(notFound);
+app.use(errorHandler);
+
+app.listen(PORT, () => console.log(`[server]: Listening on Port: ${PORT}`));
