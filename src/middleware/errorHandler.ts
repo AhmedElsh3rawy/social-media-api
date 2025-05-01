@@ -13,7 +13,7 @@ export const errorHandler = (
 	res.status(err.statusCode || 500).json({
 		statusCode,
 		message,
-		stack: err.stack,
+		stack: process.env.NODE_ENV === "production" ? "😁" : err.stack,
 	});
 };
 
