@@ -3,7 +3,7 @@ import { Client } from "pg";
 import * as schema from "./schema/schema";
 
 const client = new Client({
-	connectionString: process.env.DB_URL as string,
+	connectionString: process.env.DATABASE_URL as string,
 });
 
 (async () => {
