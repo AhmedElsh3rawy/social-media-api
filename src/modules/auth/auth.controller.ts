@@ -17,7 +17,6 @@ export const register = asyncWrapper(
 		if (req.file) {
 			data.imageUrl = (await uploadImage(req)).url;
 		}
-		console.log(data);
 		const result = await db.insert(users).values(data).returning();
 		res.status(201).json({ data: result[0] });
 	},
