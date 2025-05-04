@@ -2,12 +2,17 @@ import express from "express";
 import type { Express, Request, Response } from "express";
 import morgan from "morgan";
 import { errorHandler, notFound } from "./middleware/errorHandler";
+import authRouter from "./modules/auth/auth.router";
 
 const app: Express = express();
 
 const PORT = (process.env.PORT as unknown as number) || 8080;
 
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
+
+app.use("/api/v1/auth", authRouter);
 
 app.get("/", (req: Request, res: Response) => {
 	res.send("Hello, World!");
