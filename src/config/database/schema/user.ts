@@ -6,13 +6,14 @@ import {
 	integer,
 	text,
 	timestamp,
+	unique,
 } from "drizzle-orm/pg-core";
 import { posts } from "./post";
 
 export const users = pgTable("users", {
 	id: serial("id").primaryKey(),
 	name: text("name").notNull(),
-	email: text("email").notNull(),
+	email: text("email").notNull().unique(),
 	password: text("password").notNull(),
 	imageUrl: text("image_url"),
 	createdAt: timestamp("created_at").$defaultFn(() => new Date()),
