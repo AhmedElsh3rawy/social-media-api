@@ -3,6 +3,7 @@ import type { Express, Request, Response } from "express";
 import morgan from "morgan";
 import { errorHandler, notFound } from "./middleware/errorHandler";
 import authRouter from "./modules/auth/auth.router";
+import userRouter from "./modules/user/user.router";
 
 const app: Express = express();
 
@@ -13,6 +14,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/users", userRouter);
 
 app.get("/", (req: Request, res: Response) => {
 	res.send("Hello, World!");
