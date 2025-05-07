@@ -6,6 +6,7 @@ import { errorHandler, notFound } from "./middleware/errorHandler";
 import authRouter from "./modules/auth/auth.router";
 import userRouter from "./modules/user/user.router";
 import { setupSwaggerDocs } from "./utils/swagger";
+import { verifyJWT } from "./middleware/verifyJWT";
 
 const app: Express = express();
 
@@ -17,6 +18,7 @@ app.use(morgan("dev"));
 app.use(cookieParser());
 
 app.use("/api/v1/auth", authRouter);
+app.use(verifyJWT);
 app.use("/api/v1/users", userRouter);
 
 app.get("/", (req: Request, res: Response) => {
