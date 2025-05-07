@@ -13,6 +13,6 @@ export const validate =
 			return next(new AppError(fromZodError(result.error).message, 400));
 		}
 
-		req[property] = result.data;
+		Object.assign(req[property], result.data);
 		next();
 	};
