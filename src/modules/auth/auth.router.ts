@@ -82,4 +82,6 @@ router.post(
  */
 router.post("/login", validate(loginSchema, "body"), login);
 
+router.post("/refresh", refresh);
+
 export default router;

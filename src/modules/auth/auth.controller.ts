@@ -51,3 +51,19 @@ export const login = asyncWrapper(
 		res.status(200).json({ accessToken });
 	},
 );
+
+export const refresh = asyncWrapper(
+	async (req: Request, res: Response, next: NextFunction) => {
+		const token = req.cookies.accessToken;
+		if (!token) {
+			return next(new AppError("No token provided", 403));
+		}
+		const decoded = (await verifyRefreshToken(token)) as { id: number };
+		const user = await db.select().from(users).where(eq(users.id, decoded.id));
+		if (user.length === 0) {
+			return next(new AppError("You are not allowed.", 401));
+		}
+		const accessToken = await generateAccessToken(user[0].id);
+		res.status(200).json({ accessToken });
+	},
+);
