@@ -1,6 +1,10 @@
 import { Router } from "express";
-import { getAll, getById, getByEmail } from "./user.controller";
-import { getByIdSchema, getByEmailSchema } from "./user.validation";
+import { getAll, getById, getByEmail, getByName } from "./user.controller";
+import {
+	getByIdSchema,
+	getByEmailSchema,
+	getByNameSchema,
+} from "./user.validation";
 import { validate } from "../../middleware/validation";
 
 const router = Router();
@@ -62,5 +66,26 @@ router.get(
 	validate(getByEmailSchema, "params"),
 	getByEmail,
 );
+
+/**
+ * @swagger
+ * /api/v1/users/name/getByName:
+ *   get:
+ *     summary: Get users by name
+ *     tags: [Users]
+ *     parameters:
+ *       - in: query
+ *         name: name
+ *         required: true
+ *         description: The name of the user
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Users found
+ *       400:
+ *         description: No user by that name
+ */
+router.get("/name/getByName", validate(getByNameSchema, "query"), getByName);
 
 export default router;

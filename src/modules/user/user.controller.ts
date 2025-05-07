@@ -36,3 +36,17 @@ export const getByEmail = asyncWrapper(
 		res.status(200).json({ data: result[0] });
 	},
 );
+
+export const getByName = asyncWrapper(
+	async (req: Request, res: Response, next: NextFunction) => {
+		const name = req.query.name;
+		const result = await db
+			.select()
+			.from(users)
+			.where(like(users.name, `${name}%`));
+		if (result.length === 0) {
+			return next(new AppError("No user by that name.", 400));
+		}
+		res.status(200).json({ data: result });
+	},
+);
