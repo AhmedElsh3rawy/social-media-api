@@ -38,6 +38,25 @@ router.get("/", getAll);
  */
 router.get("/:id", validate(getByIdSchema, "params"), getById);
 
+/**
+ * @swagger
+ * /api/v1/users/{email}/getByEmail:
+ *   get:
+ *     summary: Get user by email
+ *     tags: [Users]
+ *     parameters:
+ *       - in: path
+ *         name: email
+ *         required: true
+ *         description: The email of the user
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User found
+ *       404:
+ *         description: User not found
+ */
 router.get(
 	"/:email/getByEmail",
 	validate(getByEmailSchema, "params"),
