@@ -56,7 +56,7 @@ export const refresh = asyncWrapper(
 	async (req: Request, res: Response, next: NextFunction) => {
 		const token = req.cookies.accessToken;
 		if (!token) {
-			return next(new AppError("No token provided", 403));
+			return next(new AppError("No token provided.", 403));
 		}
 		const decoded = (await verifyRefreshToken(token)) as { id: number };
 		const user = await db.select().from(users).where(eq(users.id, decoded.id));
