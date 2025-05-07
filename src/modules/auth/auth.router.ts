@@ -82,6 +82,29 @@ router.post(
  */
 router.post("/login", validate(loginSchema, "body"), login);
 
+/**
+ * @swagger
+ * /api/v1/auth/refresh:
+ *   post:
+ *     summary: Refresh the access token using the refresh token stored in the cookie
+ *     tags: [Auth]
+ *     description: This endpoint allows users to refresh their access token by sending a refresh token in a cookie.
+ *     responses:
+ *       200:
+ *         description: Successfully refreshed access token
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 accessToken:
+ *                   type: string
+ *                   description: The new access token
+ *       403:
+ *         description: No token provided
+ *       401:
+ *         description: You are not allowed
+ */
 router.post("/refresh", refresh);
 
 export default router;
