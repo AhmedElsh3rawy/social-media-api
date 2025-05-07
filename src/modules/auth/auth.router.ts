@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { register } from "./auth.controller";
+import { login, refresh, register } from "./auth.controller";
 import { upload } from "../../config/multer";
 import { validate } from "../../middleware/validation";
-import { registerSchema } from "./auth.validation";
+import { loginSchema, registerSchema } from "./auth.validation";
 
 const router = Router();
 
@@ -45,5 +45,41 @@ router.post(
 	validate(registerSchema, "body"),
 	register,
 );
+
+/**
+ * @swagger
+ * /api/v1/auth/login:
+ *   post:
+ *     summary: Login and get tokens
+ *     description: Logs in a user and returns access and refresh tokens.
+ *     tags: [Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Successful login, returns tokens
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 accessToken:
+ *                   type: string
+ *       400:
+ *         description: Invalid email or password
+ */
+router.post("/login", validate(loginSchema, "body"), login);
 
 export default router;
