@@ -2,7 +2,7 @@ import type { Request, Response, NextFunction } from "express";
 import { asyncWrapper } from "../../utils/asyncWrapper";
 import { db } from "../../config/database/db";
 import { users } from "../../config/database/schema/user";
-import { eq } from "drizzle-orm";
+import { eq, like } from "drizzle-orm";
 import AppError from "../../utils/appError";
 
 export const getAll = asyncWrapper(
@@ -19,7 +19,18 @@ export const getById = asyncWrapper(
 	async (req: Request, res: Response, next: NextFunction) => {
 		const id = +req.params.id;
 		const result = await db.select().from(users).where(eq(users.id, id));
-		if (!result) {
+		if (result.length === 0) {
+			return next(new AppError("User does not exist.", 400));
+		}
+		res.status(200).json({ data: result[0] });
+	},
+);
+
+export const getByEmail = asyncWrapper(
+	async (req: Request, res: Response, next: NextFunction) => {
+		const email = req.params.email;
+		const result = await db.select().from(users).where(eq(users.email, email));
+		if (result.length === 0) {
 			return next(new AppError("User does not exist.", 400));
 		}
 		res.status(200).json({ data: result[0] });

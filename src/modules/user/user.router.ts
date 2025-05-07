@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { getAll, getById } from "./user.controller";
-import { getByIdSchema } from "./user.validation";
+import { getAll, getById, getByEmail } from "./user.controller";
+import { getByIdSchema, getByEmailSchema } from "./user.validation";
 import { validate } from "../../middleware/validation";
 
 const router = Router();
@@ -37,5 +37,11 @@ router.get("/", getAll);
  *         description: User not found
  */
 router.get("/:id", validate(getByIdSchema, "params"), getById);
+
+router.get(
+	"/:email/getByEmail",
+	validate(getByEmailSchema, "params"),
+	getByEmail,
+);
 
 export default router;
