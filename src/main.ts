@@ -1,6 +1,7 @@
 import express from "express";
 import type { Express, Request, Response } from "express";
 import morgan from "morgan";
+import cookieParser from "cookie-parser";
 import { errorHandler, notFound } from "./middleware/errorHandler";
 import authRouter from "./modules/auth/auth.router";
 import userRouter from "./modules/user/user.router";
@@ -13,6 +14,7 @@ const PORT = (process.env.PORT as unknown as number) || 8080;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
+app.use(cookieParser());
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
