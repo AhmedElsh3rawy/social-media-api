@@ -67,3 +67,10 @@ export const refresh = asyncWrapper(
 		res.status(200).json({ accessToken });
 	},
 );
+
+export const logout = asyncWrapper(
+	async (req: Request, res: Response, next: NextFunction) => {
+		res.clearCookie("refreshToken", { httpOnly: true, sameSite: "strict" });
+		res.status(200).json({ message: "Logged out successfully" });
+	},
+);

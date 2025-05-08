@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { login, refresh, register } from "./auth.controller";
+import { login, logout, refresh, register } from "./auth.controller";
 import { upload } from "../../config/multer";
 import { validate } from "../../middleware/validation";
 import { loginSchema, registerSchema } from "./auth.validation";
@@ -106,5 +106,18 @@ router.post("/login", validate(loginSchema, "body"), login);
  *         description: You are not allowed
  */
 router.post("/refresh", refresh);
+
+/**
+ * @swagger
+ * /api/v1/auth/logout:
+ *   delete:
+ *     summary: Logout user
+ *     tags: [Auth]
+ *     description: Clears the authentication cookies to log the user out.
+ *     responses:
+ *       200:
+ *         description: Successfully logged out
+ */
+router.delete("/logout", logout);
 
 export default router;
