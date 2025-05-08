@@ -17,6 +17,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 app.use(cookieParser());
 
+setupSwaggerDocs(app);
+
 app.use("/api/v1/auth", authRouter);
 app.use(verifyJWT);
 app.use("/api/v1/users", userRouter);
@@ -24,8 +26,6 @@ app.use("/api/v1/users", userRouter);
 app.get("/", (req: Request, res: Response) => {
 	res.send("Hello, World!");
 });
-
-setupSwaggerDocs(app);
 
 app.use(notFound);
 app.use(errorHandler);
