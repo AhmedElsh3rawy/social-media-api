@@ -1,11 +1,18 @@
 import { Router } from "express";
-import { getAll, getById, getByEmail, getByName } from "./user.controller";
+import {
+	getAll,
+	getById,
+	getByEmail,
+	getByName,
+	changeProfilePic,
+} from "./user.controller";
 import {
 	getByIdSchema,
 	getByEmailSchema,
 	getByNameSchema,
 } from "./user.validation";
 import { validate } from "../../middleware/validation";
+import { upload } from "../../config/multer";
 
 const router = Router();
 
@@ -20,6 +27,40 @@ const router = Router();
  *         description: A list of users
  */
 router.get("/", getAll);
+
+/**
+ * @swagger
+ * /api/v1/users/profile-picture:
+ *   patch:
+ *     summary: Change the user's profile picture
+ *     tags: [Users]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         multipart/form-data:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               image:
+ *                 type: string
+ *                 format: binary
+ *     responses:
+ *       200:
+ *         description: Profile picture updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 data:
+ *                   type: object
+ *                   properties:
+ *                     id:
+ *                       type: string
+ *                     imageUrl:
+ *                       type: string
+ */
+router.patch("/profile-picture", upload.single("image"), changeProfilePic);
 
 /**
  * @swagger
