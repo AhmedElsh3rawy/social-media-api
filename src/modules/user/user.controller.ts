@@ -58,7 +58,20 @@ export const changeProfilePic = asyncWrapper(
 		const imageUrl = (await uploadImage(req)).url;
 		const result = await db
 			.update(users)
-			.set({ imageUrl: imageUrl })
+			.set({ imageUrl: imageUrl, updatedAt: new Date() })
+			.where(eq(users.id, id))
+			.returning();
+		res.status(200).json({ data: result[0] });
+	},
+);
+
+export const updateUser = asyncWrapper(
+	async (req: Request, res: Response, next: NextFunction) => {
+		const id = req.user.id;
+		const name = req.body.name;
+		const result = await db
+			.update(users)
+			.set({ name: name, updatedAt: new Date() })
 			.where(eq(users.id, id))
 			.returning();
 		res.status(200).json({ data: result[0] });

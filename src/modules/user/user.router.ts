@@ -5,11 +5,13 @@ import {
 	getByEmail,
 	getByName,
 	changeProfilePic,
+	updateUser,
 } from "./user.controller";
 import {
 	getByIdSchema,
 	getByEmailSchema,
 	getByNameSchema,
+	updateUserSchema,
 } from "./user.validation";
 import { validate } from "../../middleware/validation";
 import { upload } from "../../config/multer";
@@ -22,6 +24,8 @@ const router = Router();
  *   get:
  *     summary: Get all users
  *     tags: [Users]
+ *     security:
+ *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: A list of users
@@ -34,6 +38,8 @@ router.get("/", getAll);
  *   get:
  *     summary: Get users by name
  *     tags: [Users]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: query
  *         name: name
@@ -51,10 +57,37 @@ router.get("/name", validate(getByNameSchema, "query"), getByName);
 
 /**
  * @swagger
+ * api/v1/users/me:
+ *   patch:
+ *     summary: Update the current user
+ *     tags: [Users]
+ *     security:
+ *       - BearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               name:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Username updated successfully
+ *       401:
+ *         description: Unauthorized
+ */
+router.patch("/me", validate(updateUserSchema, "body"), updateUser);
+
+/**
+ * @swagger
  * /api/v1/users/profile-picture:
  *   patch:
  *     summary: Change the user's profile picture
  *     tags: [Users]
+ *     security:
+ *       - BearerAuth: []
  *     requestBody:
  *       required: true
  *       content:
@@ -89,6 +122,8 @@ router.patch("/profile-picture", upload.single("image"), changeProfilePic);
  *   get:
  *     summary: Get user by ID
  *     tags: [Users]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: id
@@ -110,6 +145,8 @@ router.get("/:id", validate(getByIdSchema, "params"), getById);
  *   get:
  *     summary: Get user by email
  *     tags: [Users]
+ *     security:
+ *       - BearerAuth: []
  *     parameters:
  *       - in: path
  *         name: email
