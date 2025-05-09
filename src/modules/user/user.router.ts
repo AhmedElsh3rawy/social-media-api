@@ -30,6 +30,27 @@ router.get("/", getAll);
 
 /**
  * @swagger
+ * /api/v1/users/name:
+ *   get:
+ *     summary: Get users by name
+ *     tags: [Users]
+ *     parameters:
+ *       - in: query
+ *         name: name
+ *         required: true
+ *         description: The name of the user
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Users found
+ *       400:
+ *         description: No user by that name
+ */
+router.get("/name", validate(getByNameSchema, "query"), getByName);
+
+/**
+ * @swagger
  * /api/v1/users/profile-picture:
  *   patch:
  *     summary: Change the user's profile picture
@@ -107,26 +128,5 @@ router.get(
 	validate(getByEmailSchema, "params"),
 	getByEmail,
 );
-
-/**
- * @swagger
- * /api/v1/users/name/getByName:
- *   get:
- *     summary: Get users by name
- *     tags: [Users]
- *     parameters:
- *       - in: query
- *         name: name
- *         required: true
- *         description: The name of the user
- *         schema:
- *           type: string
- *     responses:
- *       200:
- *         description: Users found
- *       400:
- *         description: No user by that name
- */
-router.get("/name/getByName", validate(getByNameSchema, "query"), getByName);
 
 export default router;
