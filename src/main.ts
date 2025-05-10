@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import { errorHandler, notFound } from "./middleware/errorHandler";
 import authRouter from "./modules/auth/auth.router";
 import userRouter from "./modules/user/user.router";
+import followsRouter from "./modules/follow/follow.router";
 import { setupSwaggerDocs } from "./utils/swagger";
 import { verifyJWT } from "./middleware/verifyJWT";
 
@@ -19,13 +20,14 @@ app.use(cookieParser());
 
 setupSwaggerDocs(app);
 
-app.use("/api/v1/auth", authRouter);
-app.use(verifyJWT);
-app.use("/api/v1/users", userRouter);
-
 app.get("/", (req: Request, res: Response) => {
 	res.send("Hello, World!");
 });
+
+app.use("/api/v1/auth", authRouter);
+app.use(verifyJWT);
+app.use("/api/v1/users", userRouter);
+app.use("/api/v1/following", followsRouter);
 
 app.use(notFound);
 app.use(errorHandler);
