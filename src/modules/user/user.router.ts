@@ -15,6 +15,7 @@ import {
 } from "./user.validation";
 import { validate } from "../../middleware/validation";
 import { upload } from "../../config/multer";
+import { verifyJWT } from "../../middleware/verifyJWT";
 
 const router = Router();
 
@@ -53,7 +54,7 @@ router.get("/", getAll);
  *       400:
  *         description: No user by that name
  */
-router.get("/name", validate(getByNameSchema, "query"), getByName);
+router.get("/name", verifyJWT, validate(getByNameSchema, "query"), getByName);
 
 /**
  * @swagger
@@ -78,7 +79,7 @@ router.get("/name", validate(getByNameSchema, "query"), getByName);
  *       401:
  *         description: Unauthorized
  */
-router.patch("/me", validate(updateUserSchema, "body"), updateUser);
+router.patch("/me", verifyJWT, validate(updateUserSchema, "body"), updateUser);
 
 /**
  * @swagger
@@ -114,7 +115,12 @@ router.patch("/me", validate(updateUserSchema, "body"), updateUser);
  *                     imageUrl:
  *                       type: string
  */
-router.patch("/profile-picture", upload.single("image"), changeProfilePic);
+router.patch(
+	"/profile-picture",
+	verifyJWT,
+	upload.single("image"),
+	changeProfilePic,
+);
 
 /**
  * @swagger
@@ -137,7 +143,7 @@ router.patch("/profile-picture", upload.single("image"), changeProfilePic);
  *       404:
  *         description: User not found
  */
-router.get("/:id", validate(getByIdSchema, "params"), getById);
+router.get("/:id", verifyJWT, validate(getByIdSchema, "params"), getById);
 
 /**
  * @swagger
@@ -162,6 +168,7 @@ router.get("/:id", validate(getByIdSchema, "params"), getById);
  */
 router.get(
 	"/:email/getByEmail",
+	verifyJWT,
 	validate(getByEmailSchema, "params"),
 	getByEmail,
 );
