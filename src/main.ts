@@ -25,8 +25,8 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 app.use("/api/v1/auth", authRouter);
-app.use(verifyJWT);
 app.use("/api/v1/users", userRouter);
+app.use(verifyJWT);
 app.use("/api/v1/following", followsRouter);
 
 app.use(notFound);
