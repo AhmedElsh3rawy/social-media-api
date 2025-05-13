@@ -41,3 +41,14 @@ export const getAllFollowers = asyncWrapper(
 		res.status(200).json({ data: result });
 	},
 );
+
+export const getAllFollowing = asyncWrapper(
+	async (req: Request, res: Response, next: NextFunction) => {
+		const id = req.user.id;
+		const result = await db
+			.select({ following: users })
+			.from(users)
+			.innerJoin(follows, eq(follows.followingId, users.id));
+		res.status(200).json({ data: result });
+	},
+);
