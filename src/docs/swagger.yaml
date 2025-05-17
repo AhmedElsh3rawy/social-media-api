@@ -1,0 +1,109 @@
+openapi: 3.0.0
+info:
+  title: Express API
+  version: 1.0.0
+server:
+  - url: /api/v1
+    description: Base API URL
+
+tags:
+  - name: Auth
+    description: Authentication related endpoints
+  - name: Users
+    description: Users related endpoints
+
+paths:
+  /auth/register:
+  register:
+    post:
+      summary: Register a new user
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - name
+                - password
+                - email
+              properties:
+                name:
+                  type: string
+                password:
+                  type: string
+                email:
+                  type: string
+                image:
+                  type: string
+                  format: binary
+      responses:
+        "200":
+          description: User registered successfully
+        "400":
+          description: Validation error
+        "500":
+          description: Internal server error
+  /auth/login:
+  login:
+    post:
+      summary: Login and get tokens
+      tags:
+        - Auth
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - email
+                - password
+              properties:
+                email:
+                  type: string
+                password:
+                  type: string
+      responses:
+        "200":
+          description: Successful login, returns tokens
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+        "400":
+          description: Invalid email or password
+
+  refresh:
+    post:
+      summary: Refresh access token
+      tags:
+        - Auth
+      responses:
+        "200":
+          description: Successfully refreshed access token
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessToken:
+                    type: string
+        "403":
+          description: No token provided
+        "401":
+          description: You are not allowed
+
+  logout:
+    delete:
+      summary: Logout user
+      tags:
+        - Auth
+      responses:
+        "200":
+          description: Successfully logged out
