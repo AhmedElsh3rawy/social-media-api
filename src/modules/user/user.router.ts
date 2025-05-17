@@ -7,8 +7,8 @@ import {
 	changeProfilePic,
 	updateUser,
 } from "./user.controller";
+import { validateIdParam } from "../../utils/globalValidation";
 import {
-	getByIdSchema,
 	getByEmailSchema,
 	getByNameSchema,
 	updateUserSchema,
@@ -25,8 +25,6 @@ const router = Router();
  *   get:
  *     summary: Get all users
  *     tags: [Users]
- *     security:
- *       - BearerAuth: []
  *     responses:
  *       200:
  *         description: A list of users
@@ -143,7 +141,7 @@ router.patch(
  *       404:
  *         description: User not found
  */
-router.get("/:id", verifyJWT, validate(getByIdSchema, "params"), getById);
+router.get("/:id", verifyJWT, validate(validateIdParam, "params"), getById);
 
 /**
  * @swagger
