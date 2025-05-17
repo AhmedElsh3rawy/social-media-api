@@ -1,19 +1,9 @@
-import swaggerJSDoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
 import type { Express } from "express";
+import YAML from "yamljs";
+import path from "node:path";
 
-const options: swaggerJSDoc.Options = {
-	definition: {
-		openapi: "3.0.0",
-		info: {
-			title: "Express API with Swagger",
-			version: "1.0.0",
-		},
-	},
-	apis: ["./src/modules/**/*.ts"],
-};
-
-const swaggerSpec = swaggerJSDoc(options);
+const swaggerSpec = YAML.load(path.join(__dirname, "../docs/swagger.yaml"));
 
 export const setupSwaggerDocs = (app: Express) => {
 	app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
