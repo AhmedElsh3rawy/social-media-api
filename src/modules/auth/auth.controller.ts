@@ -54,7 +54,7 @@ export const login = asyncWrapper(
 
 export const refresh = asyncWrapper(
 	async (req: Request, res: Response, next: NextFunction) => {
-		const token = req.cookies.accessToken;
+		const token = req.cookies.refreshToken;
 		if (!token) {
 			return next(new AppError("No token provided.", 403));
 		}
