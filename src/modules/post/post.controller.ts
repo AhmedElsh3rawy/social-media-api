@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import { db } from "../../config/database/db";
 import { asyncWrapper } from "../../utils/asyncWrapper";
-import type { CreatePostBody } from "./post.types";
+import type { CreatePostBody, updatePostBody } from "./post.types";
 import { posts } from "../../config/database/schema";
 import { uploadImage } from "../../config/image-kit";
 import { eq } from "drizzle-orm";
@@ -20,11 +20,34 @@ export const createPost = asyncWrapper(
 	},
 );
 
+export const updatePost = asyncWrapper(
+	async (req: Request, res: Response, next: NextFunction) => {
+		const id = +req.params.id;
+		const isOwner = await ownsPost(req.user.id, id);
+		if (!isOwner) {
+			return next(new AppError("You do not own this post.", 403));
+		}
+		const data = req.body as updatePostBody;
+		if (req.file) {
+			data.imageUrl = (await uploadImage(req)).url;
+		}
+		const result = await db
+			.update(posts)
+			.set({
+				...data,
+				updatedAt: new Date(),
+			})
+			.where(eq(posts.id, id))
+			.returning();
+		res.status(200).json({ data: result[0] });
+	},
+);
+
 export const deletePost = asyncWrapper(
 	async (req: Request, res: Response, next: NextFunction) => {
 		const id = +req.params.id;
-		const check = await ownsPost(req.user.id, id);
-		if (!check) {
+		const isOwner = await ownsPost(req.user.id, id);
+		if (!isOwner) {
 			return next(new AppError("You do not own this post.", 403));
 		}
 		await db.delete(posts).where(eq(posts.id, id));
