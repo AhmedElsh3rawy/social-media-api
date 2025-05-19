@@ -5,41 +5,31 @@ import {
 	follow,
 	getAllFollowers,
 	getAllFollowing,
+	getMyFollowers,
+	getMyFollowing,
 	unfollow,
 } from "./follow.controller";
 
 const router = Router();
 
-/**
- * @swagger
- * /api/v1/getAllFollowers:
- *   get:
- *     summary: Get all user followers
- *     tags: [Follow]
- *     security:
- *       - BearerAuth: []
- *     responses:
- *       200:
- *         description: A list of users
- */
-router.get("/getAllFollowers", getAllFollowers);
+router.get("/following/me", getMyFollowing);
 
-/**
- * @swagger
- * /api/v1/getAllFollowings:
- *   get:
- *     summary: Get all user followings
- *     tags: [Follow]
- *     security:
- *       - BearerAuth: []
- *     responses:
- *       200:
- *         description: A list of users
- */
-router.get("/getAllFollowings", getAllFollowing);
+router.get("/followers/me", getMyFollowers);
 
-router.post("/:id/follow", validate(validateIdParam, "params"), follow);
+router.get(
+	"/followers/:id",
+	validate(validateIdParam, "params"),
+	getAllFollowers,
+);
 
-router.delete("/:id/unfollow", validate(validateIdParam, "params"), unfollow);
+router.get(
+	"/following/:id",
+	validate(validateIdParam, "params"),
+	getAllFollowing,
+);
+
+router.post("/follow/:id", validate(validateIdParam, "params"), follow);
+
+router.delete("/unfollow/:id", validate(validateIdParam, "params"), unfollow);
 
 export default router;

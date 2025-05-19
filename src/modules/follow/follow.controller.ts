@@ -31,7 +31,7 @@ export const unfollow = asyncWrapper(
 	},
 );
 
-export const getAllFollowers = asyncWrapper(
+export const getMyFollowers = asyncWrapper(
 	async (req: Request, res: Response, next: NextFunction) => {
 		const id = req.user.id;
 		const result = await db
@@ -42,9 +42,31 @@ export const getAllFollowers = asyncWrapper(
 	},
 );
 
-export const getAllFollowing = asyncWrapper(
+export const getMyFollowing = asyncWrapper(
 	async (req: Request, res: Response, next: NextFunction) => {
 		const id = req.user.id;
+		const result = await db
+			.select({ following: users })
+			.from(users)
+			.innerJoin(follows, eq(follows.followingId, users.id));
+		res.status(200).json({ data: result });
+	},
+);
+
+export const getAllFollowers = asyncWrapper(
+	async (req: Request, res: Response, next: NextFunction) => {
+		const id = +req.params.id;
+		const result = await db
+			.select({ follower: users })
+			.from(users)
+			.innerJoin(follows, eq(follows.followerId, users.id));
+		res.status(200).json({ data: result });
+	},
+);
+
+export const getAllFollowing = asyncWrapper(
+	async (req: Request, res: Response, next: NextFunction) => {
+		const id = +req.params.id;
 		const result = await db
 			.select({ following: users })
 			.from(users)
