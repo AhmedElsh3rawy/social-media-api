@@ -3,3 +3,8 @@ export type CreatePostBody = {
 	imageUrl?: string;
 	authorId: number;
 };
+
+export type updatePostBody = {
+	content?: string;
+	imageUrl: string;
+};
