@@ -22,14 +22,15 @@ tags:
     description: Follow related endpoints
   - name: Posts
     description: Posts related endpoints
+  - name: Likes
+    description: Likes related endpoints
 
 paths:
   /auth/register:
   register:
     post:
       summary: Register a new user
-      tags:
-        - Auth
+      tags: [Auth]
       requestBody:
         required: true
         content:
@@ -61,8 +62,7 @@ paths:
   login:
     post:
       summary: Login and get tokens
-      tags:
-        - Auth
+      tags: [Auth]
       requestBody:
         required: true
         content:
@@ -93,8 +93,7 @@ paths:
   refresh:
     post:
       summary: Refresh access token
-      tags:
-        - Auth
+      tags: [Auth]
       description: |
         Refresh the access token by sending the refresh token in a cookie.
         The cookie must be named `refreshToken`.
@@ -123,8 +122,7 @@ paths:
   logout:
     delete:
       summary: Logout user
-      tags:
-        - Auth
+      tags: [Auth]
       security:
         - bearerAuth: []
       responses:
@@ -134,8 +132,7 @@ paths:
   /users:
     get:
       summary: Get all users
-      tags:
-        - Users
+      tags: [Users]
       responses:
         "200":
           description: A list of users
@@ -163,8 +160,7 @@ paths:
   /users/me:
     patch:
       summary: Update the current user
-      tags:
-        - Users
+      tags: [Users]
       security:
         - bearerAuth: []
       requestBody:
@@ -282,6 +278,12 @@ paths:
       tags: [Follow]
       security:
         - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         200:
           description: A list of users
@@ -292,6 +294,12 @@ paths:
       tags: [Follow]
       security:
         - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
       responses:
         200:
           description: A list of users
@@ -302,7 +310,15 @@ paths:
       tags: [Follow]
       security:
         - bearerAuth: []
-      responses: 200
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Followed successfully
 
   /unfollow/{id}:
     delete:
@@ -310,4 +326,83 @@ paths:
       tags: [Follow]
       security:
         - bearerAuth: []
-      responses: 200
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Unfollowed successfully
+
+  /posts:
+    post:
+      summary: Create post
+      tags: [Posts]
+      security:
+        - bearerAuth: []
+      responses:
+      200:
+        description: Post details
+
+  /posts/{id}:
+    delete:
+      summary: Delete Post by id
+      tags: [Posts]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Post was deleted successfully
+
+    patch:
+      summary: Update post by id
+      tags: [Posts]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: New Post details
+
+  /likes/react/{id}:
+    post:
+      summary: Toggle like
+      tags: [Likes]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: type integer
+      responses:
+        200:
+          description: Liked or Disliked
+
+  /likes/{id}:
+    get:
+      summary: Get all likes of post
+      tags: [Likes]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: type integer
+      responses:
+        200:
+          description: List of users who liked the posts
