@@ -2,8 +2,8 @@ import { pgTable, integer, primaryKey } from "drizzle-orm/pg-core";
 import { users } from "./user";
 import { posts } from "./post";
 
-export const likes = pgTable(
-	"likes",
+export const PostLikes = pgTable(
+	"post_likes",
 	{
 		userId: integer("user_id")
 			.notNull()
