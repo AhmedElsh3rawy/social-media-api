@@ -65,13 +65,26 @@ export const changeProfilePic = asyncWrapper(
 	},
 );
 
-export const updateUser = asyncWrapper(
+export const updateName = asyncWrapper(
 	async (req: Request, res: Response, next: NextFunction) => {
 		const id = req.user.id;
 		const name = req.body.name;
 		const result = await db
 			.update(users)
 			.set({ name: name, updatedAt: new Date() })
+			.where(eq(users.id, id))
+			.returning();
+		res.status(200).json({ data: result[0] });
+	},
+);
+
+export const updateBio = asyncWrapper(
+	async (req: Request, res: Response, next: NextFunction) => {
+		const id = req.user.id;
+		const bio = req.body.bio;
+		const result = await db
+			.update(users)
+			.set({ bio: bio, updatedAt: new Date() })
 			.where(eq(users.id, id))
 			.returning();
 		res.status(200).json({ data: result[0] });
