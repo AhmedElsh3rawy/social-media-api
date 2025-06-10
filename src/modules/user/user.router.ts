@@ -5,7 +5,7 @@ import {
 	getByEmail,
 	getByName,
 	changeProfilePic,
-	updateUser,
+	updateName,
 } from "./user.controller";
 import { validateIdParam } from "../../utils/globalValidation";
 import {
@@ -23,7 +23,7 @@ router.get("/", getAll);
 
 router.get("/name", verifyJWT, validate(getByNameSchema, "query"), getByName);
 
-router.patch("/me", verifyJWT, validate(updateUserSchema, "body"), updateUser);
+router.patch("/me", verifyJWT, validate(updateUserSchema, "body"), updateName);
 
 router.patch(
 	"/profile-picture",
