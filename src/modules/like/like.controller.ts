@@ -33,3 +33,37 @@ export const getAllPostLikes = asyncWrapper(
 		res.status(200).json({ data: result });
 	},
 );
+
+export const toggleCommentLike = asyncWrapper(
+	async (req: Request, res: Response, next: NextFunction) => {
+		const id = req.user.id;
+		const commentId = +req.params.id;
+		const result = await db
+			.select()
+			.from(commentLikes)
+			.where(and(eq(commentLikes.userId, id), eq(commentLikes.commentId, id)));
+		if (result.length === 0) {
+			await db
+				.insert(commentLikes)
+				.values({ userId: id, commentId: commentId });
+			return res.status(200).json({ message: "Liked" });
+		}
+		await db
+			.delete(commentLikes)
+			.where(
+				and(eq(commentLikes.userId, id), eq(commentLikes.commentId, commentId)),
+			);
+		res.status(200).json({ message: "Disliked" });
+	},
+);
+
+export const getAllCommentLikes = asyncWrapper(
+	async (req: Request, res: Response, next: NextFunction) => {
+		const commentId = +req.params.id;
+		const result = await db
+			.select()
+			.from(commentLikes)
+			.where(eq(commentLikes.commentId, commentId));
+		res.status(200).json({ data: result });
+	},
+);
