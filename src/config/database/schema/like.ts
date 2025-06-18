@@ -3,7 +3,7 @@ import { users } from "./user";
 import { posts } from "./post";
 import { comments } from "./comment";
 
-export const PostLikes = pgTable(
+export const postLikes = pgTable(
 	"post_likes",
 	{
 		userId: integer("user_id")
@@ -19,14 +19,14 @@ export const PostLikes = pgTable(
 	}),
 );
 
-export const CommentLikes = pgTable(
+export const commentLikes = pgTable(
 	"comment_likes",
 	{
 		userId: integer("user_id")
 			.notNull()
 			.references(() => users.id, { onDelete: "cascade", onUpdate: "cascade" }),
 
-		commentId: integer("post_id")
+		commentId: integer("comment_id")
 			.notNull()
 			.references(() => comments.id, {
 				onDelete: "cascade",
