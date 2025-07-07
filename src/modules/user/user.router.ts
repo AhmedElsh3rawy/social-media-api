@@ -8,6 +8,7 @@ import {
 	updateName,
 	getFollowers,
 	getFollowings,
+	getPosts,
 } from "./user.controller";
 import { validateIdParam } from "../../utils/globalValidation";
 import {
@@ -48,6 +49,13 @@ router.get(
 	verifyJWT,
 	validate(validateIdParam, "params"),
 	getFollowings,
+);
+
+router.get(
+	"/:id/posts",
+	verifyJWT,
+	validate(validateIdParam, "params"),
+	getPosts,
 );
 
 router.get(
