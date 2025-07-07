@@ -199,6 +199,40 @@ paths:
         404:
           description: User not found
 
+  /users/{id}/followers:
+    get:
+      summary: Get all followers of user by ID
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the user
+          schema:
+            type: integer
+      responses:
+        200:
+          description: List of followers
+
+  /users/{id}/followings:
+    get:
+      summary: Get all followings of user by ID
+      tags: [Users]
+      security:
+        - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          description: The ID of the user
+          schema:
+            type: integer
+      responses:
+        200:
+          description: List of followings
+
   /users/profile-picture:
     patch:
       summary: Change the user's profile picture
@@ -405,4 +439,4 @@ paths:
           schema: type integer
       responses:
         200:
-          description: List of users who liked the posts
+          description: List of users who liked the post
