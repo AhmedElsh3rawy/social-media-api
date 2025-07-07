@@ -6,6 +6,8 @@ import {
 	getByName,
 	changeProfilePic,
 	updateName,
+	getFollowers,
+	getFollowings,
 } from "./user.controller";
 import { validateIdParam } from "../../utils/globalValidation";
 import {
@@ -33,6 +35,20 @@ router.patch(
 );
 
 router.get("/:id", verifyJWT, validate(validateIdParam, "params"), getById);
+
+router.get(
+	"/:id/followers",
+	verifyJWT,
+	validate(validateIdParam, "params"),
+	getFollowers,
+);
+
+router.get(
+	"/:id/followings",
+	verifyJWT,
+	validate(validateIdParam, "params"),
+	getFollowings,
+);
 
 router.get(
 	"/:email/getByEmail",

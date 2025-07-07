@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import { asyncWrapper } from "../../utils/asyncWrapper";
 import { db } from "../../config/database/db";
-import { users } from "../../config/database/schema/user";
+import { users, follows } from "../../config/database/schema";
 import { eq, like } from "drizzle-orm";
 import AppError from "../../utils/appError";
 import { uploadImage } from "../../config/image-kit";
@@ -48,6 +48,28 @@ export const getByName = asyncWrapper(
 		if (result.length === 0) {
 			return next(new AppError("No user by that name.", 400));
 		}
+		res.status(200).json({ data: result });
+	},
+);
+
+export const getFollowers = asyncWrapper(
+	async (req: Request, res: Response, next: NextFunction) => {
+		const id = +req.params.id;
+		const result = await db
+			.select({ follower: users })
+			.from(users)
+			.innerJoin(follows, eq(follows.followerId, users.id));
+		res.status(200).json({ data: result });
+	},
+);
+
+export const getFollowings = asyncWrapper(
+	async (req: Request, res: Response, next: NextFunction) => {
+		const id = +req.params.id;
+		const result = await db
+			.select({ following: users })
+			.from(users)
+			.innerJoin(follows, eq(follows.followingId, users.id));
 		res.status(200).json({ data: result });
 	},
 );
