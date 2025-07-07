@@ -4,7 +4,6 @@ import multer from "multer";
 import path from "node:path";
 import fs from "node:fs";
 import crypto from "node:crypto";
-import { fileURLToPath } from "node:url";
 
 const storage = multer.diskStorage({
 	destination: (req: Request, file: Express.Multer.File, cb) => {
