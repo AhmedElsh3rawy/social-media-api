@@ -6,21 +6,23 @@ import fs from "node:fs";
 import crypto from "node:crypto";
 import { fileURLToPath } from "node:url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 const storage = multer.diskStorage({
 	destination: (req: Request, file: Express.Multer.File, cb) => {
 		const basePath = path.join(__dirname, "../../uploads");
 		fs.mkdirSync(basePath, { recursive: true });
 
-		const isPost = req.path === "/api/v1/posts";
-		const isComment = req.path === "/api/v1/comments";
-		const isShare = req.path === "/api/v1/shares";
-		const fullPath = path.join(
-			basePath,
-			isPost ? "post" : isComment ? "comment" : isShare ? "share" : "profile",
-		);
+		let type = "profile";
+		if (req.path.startsWith("/api/v1/posts")) type = "post";
+		else if (req.path.startsWith("/api/v1/comments")) type = "comment";
+		else if (req.path.startsWith("/api/v1/shares")) type = "share";
+
+		let mediaType = "images";
+		if (file.mimetype.startsWith("video/")) mediaType = "videos";
+
+		const fullPath =
+			type === "profile"
+				? path.join(basePath, "profile", "images")
+				: path.join(basePath, type, mediaType);
 		fs.mkdirSync(fullPath, { recursive: true });
 
 		cb(null, fullPath);
@@ -38,7 +40,7 @@ const fileFilter = (
 	file: Express.Multer.File,
 	cb: FileFilterCallback,
 ) => {
-	if (file.mimetype.startsWith("image")) {
+	if (file.mimetype.startsWith("image") || file.mimetype.startsWith("video")) {
 		cb(null, true);
 	} else {
 		cb(new Error("Unsupported file format"));
