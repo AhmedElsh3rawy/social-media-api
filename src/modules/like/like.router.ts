@@ -1,12 +1,12 @@
 import { Router } from "express";
-import { getAllPostLikes, togglePostLike } from "./like.controller";
+import { toggleLike, getAllLikes } from "./like.controller";
 import { validateIdParam } from "../../utils/globalValidation";
 import { validate } from "../../middleware/validation";
 
 const router = Router();
 
-router.post("/react/:id", validate(validateIdParam, "params"), togglePostLike);
+router.post("/:type/:id", validate(validateIdParam, "params"), toggleLike);
 
-router.get("/:id", validate(validateIdParam, "params"), getAllPostLikes);
+router.get("/:id", validate(validateIdParam, "params"), getAllLikes);
 
 export default router;
