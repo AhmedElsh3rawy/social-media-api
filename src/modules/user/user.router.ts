@@ -9,6 +9,7 @@ import {
 	getFollowers,
 	getFollowings,
 	getPosts,
+	getLikes,
 } from "./user.controller";
 import { validateIdParam } from "../../utils/globalValidation";
 import {
@@ -56,6 +57,13 @@ router.get(
 	verifyJWT,
 	validate(validateIdParam, "params"),
 	getPosts,
+);
+
+router.get(
+	"/:id/likes",
+	verifyJWT,
+	validate(validateIdParam, "params"),
+	getLikes,
 );
 
 router.get(

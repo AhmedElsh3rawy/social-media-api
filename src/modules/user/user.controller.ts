@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from "express";
 import { asyncWrapper } from "../../utils/asyncWrapper";
 import { db } from "../../config/database/db";
-import { users, follows, posts } from "../../config/database/schema";
+import { users, follows, posts, likes } from "../../config/database/schema";
 import { eq, like } from "drizzle-orm";
 import AppError from "../../utils/appError";
 import { uploadImage } from "../../config/image-kit";
@@ -78,6 +78,14 @@ export const getPosts = asyncWrapper(
 	async (req: Request, res: Response, next: NextFunction) => {
 		const id = +req.params.id;
 		const result = await db.select().from(posts).where(eq(posts.authorId, id));
+		res.status(200).json({ data: result });
+	},
+);
+
+export const getLikes = asyncWrapper(
+	async (req: Request, res: Response, next: NextFunction) => {
+		const id = +req.params.id;
+		const result = await db.select().from(likes).where(eq(likes.userId, id));
 		res.status(200).json({ data: result });
 	},
 );
