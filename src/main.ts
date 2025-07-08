@@ -7,7 +7,7 @@ import authRouter from "./modules/auth/auth.router";
 import userRouter from "./modules/user/user.router";
 import postRouter from "./modules/post/post.router";
 import likeRouter from "./modules/like/like.router";
-import followsRouter from "./modules/follow/follow.router";
+import followRouter from "./modules/follow/follow.router";
 import { setupSwaggerDocs } from "./utils/swagger";
 import { verifyJWT } from "./middleware/verifyJWT";
 
@@ -29,7 +29,7 @@ app.get("/", (req: Request, res: Response) => {
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/users", userRouter);
 app.use(verifyJWT);
-app.use("/api/v1", followsRouter);
+app.use("/api/v1/follow", followRouter);
 app.use("/api/v1/posts", postRouter);
 app.use("/api/v1/likes", likeRouter);
 
