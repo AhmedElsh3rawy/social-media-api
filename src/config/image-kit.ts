@@ -1,5 +1,5 @@
 import ImageKit from "imagekit";
-import type { NextFunction, Request } from "express";
+import type { Request } from "express";
 import fs from "node:fs";
 import type { ReadStream } from "node:fs";
 
@@ -10,11 +10,23 @@ const imagekit = new ImageKit({
 });
 
 export const uploadImage = async (req: Request) => {
-	const imgStream: ReadStream = fs.createReadStream(req.file.path);
+	if (!req.file) {
+		throw new Error("No file provided for upload");
+	}
+
+	const filePath = req.file.path;
+	const fileName = req.file.filename;
+
+	const imgStream: ReadStream = fs.createReadStream(filePath);
+
 	const result = await imagekit.upload({
 		file: imgStream,
-		fileName: req.file.filename,
-		tags: ["tag1", "tag2"],
+		fileName,
+		tags: ["user-upload"],
+	});
+
+	fs.unlink(filePath, (err) => {
+		if (err) console.error("Error deleting file:", err);
 	});
 
 	return result;
