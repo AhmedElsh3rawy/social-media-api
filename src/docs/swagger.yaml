@@ -24,6 +24,10 @@ tags:
     description: Posts related endpoints
   - name: Likes
     description: Likes related endpoints
+  - name: Comments
+    description: Comments realted endpoints
+  - name: Share
+    description: Share related endpoints
 
 paths:
   /auth/register:
@@ -126,7 +130,7 @@ paths:
       security:
         - bearerAuth: []
       responses:
-        "200":
+        200:
           description: Successfully logged out
 
   /users:
@@ -428,7 +432,7 @@ paths:
 
   /likes/{id}:
     get:
-      summary: Get all likes of post
+      summary: Get all likes
       tags: [Likes]
       security:
         - bearerAuth: []
@@ -440,3 +444,50 @@ paths:
       responses:
         200:
           description: List of users who liked the post
+
+  /comments:
+    post:
+      summary: create comment
+      tags: [Comments]
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+      responses:
+        200:
+          description: created comment data
+
+  /comments/{id}:
+    delete:
+      summary: delete comment
+      tags: [Comments]
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: type integer
+      responses:
+        200:
+          description: Post was deleted successfully
+
+  /share:
+    post:
+      summary: create share
+      tags: [Share]
+      security:
+        - bearerAuth: []
+
+  /share/{id}:
+    patch:
+      summary: update share
+      tags: [Share]
+      security:
+        - bearerAuth: []
+
+    delete:
+      summary: delete share
+      tags: [Share]
+      security:
+        - bearerAuth: []
