@@ -10,10 +10,9 @@ export const comments = pgTable("comments", {
 	imageUrl: text("image_url"),
 	authorId: integer("author_id")
 		.notNull()
-		.references(() => users.id),
-	postId: integer("post_id")
-		.notNull()
-		.references(() => users.id),
+		.references(() => users.id, { onDelete: "cascade" }),
+	targetId: integer("target_id").notNull(),
+	type: text("type").notNull(),
 	parentCommentId: integer("parent_comment_id").references(
 		(): AnyPgColumn => comments.id,
 	),
@@ -23,7 +22,7 @@ export const comments = pgTable("comments", {
 
 export const commentsRelationsToPosts = relations(comments, ({ one }) => ({
 	post: one(posts, {
-		fields: [comments.postId],
+		fields: [comments.targetId],
 		references: [posts.id],
 	}),
 }));
