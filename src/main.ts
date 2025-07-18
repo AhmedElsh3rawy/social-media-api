@@ -7,6 +7,8 @@ import authRouter from "./modules/auth/auth.router";
 import userRouter from "./modules/user/user.router";
 import postRouter from "./modules/post/post.router";
 import likeRouter from "./modules/like/like.router";
+import commentRouter from "./modules/comment/comment.router";
+import shareRouter from "./modules/share/share.router";
 import followRouter from "./modules/follow/follow.router";
 import { setupSwaggerDocs } from "./utils/swagger";
 import { verifyJWT } from "./middleware/verifyJWT";
@@ -32,6 +34,8 @@ app.use(verifyJWT);
 app.use("/api/v1/follow", followRouter);
 app.use("/api/v1/posts", postRouter);
 app.use("/api/v1/likes", likeRouter);
+app.use("/api/v1/comments", commentRouter);
+app.use("api/v1/share", shareRouter);
 
 app.use(notFound);
 app.use(errorHandler);
